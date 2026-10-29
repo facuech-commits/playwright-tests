@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Nandi - Perfil</title>
+    <style>
+      :root {
+        --bg: #181818;
+        --panel: #212121;
+        --border-soft: #2a2a2a;
+        --text: #f2f2f2;
+        --text-muted: #a3a3a3;
+        --accent: #d97706;
+        --accent-soft: #33230f;
+        --accent-soft-text: #f0b559;
+        --radius: 10px;
+        --radius-sm: 6px;
+        --shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, 'Segoe UI', system-ui, Roboto, Arial, sans-serif;
+        margin: 0;
+        padding: 24px;
+        background: var(--bg);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+      }
+      .profile-card {
+        background: var(--panel);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius);
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+      h2 {
+        font-size: 16px;
+        font-weight: 700;
+        margin: 0 0 18px;
+        letter-spacing: 0.1px;
+      }
+      .field {
+        margin-bottom: 14px;
+      }
+      .field:last-child {
+        margin-bottom: 0;
+      }
+      label {
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+      .value {
+        font-size: 15px;
+        font-weight: 500;
+      }
+      .role-badge {
+        display: inline-block;
+        background: var(--accent-soft);
+        color: var(--accent-soft-text);
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        border: 1px solid rgba(217, 119, 6, 0.35);
+      }
+      .actions {
+        margin-top: 20px;
+      }
+      .actions iframe {
+        border: 0;
+        width: 100px;
+        height: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="profile-card">
+      <h2>Perfil de usuario</h2>
+      <div class="field">
+        <label>Usuario</label>
+        <div class="value" data-testid="profile-user"></div>
+      </div>
+      <div class="field">
+        <label>Rol</label>
+        <div class="value"><span class="role-badge" id="profile-role"></span></div>
+      </div>
+      <div class="actions">
+        <iframe
+          data-testid="profile-actions-frame"
+          src="profile-actions.html"
+          title="Acciones del perfil"
+        ></iframe>
+      </div>
+    </div>
+
+    <script>
+      (function () {
+        var session = JSON.parse(localStorage.getItem('sut_session') || 'null');
+        if (!session) {
+          document.querySelector('.profile-card').innerHTML = '<p>No hay sesión activa.</p>';
+          return;
+        }
+
+        document.querySelector('[data-testid="profile-user"]').textContent = session.user;
+        document.getElementById('profile-role').textContent =
+          session.role === 'admin' ? 'Admin' : 'Writer';
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,97 @@
+{
+  "users": [
+    {
+      "user": "Carlos",
+      "pass": "VazFerreira",
+      "role": "admin"
+    },
+    {
+      "user": "Mario",
+      "pass": "Benedetti",
+      "role": "writer"
+    }
+  ],
+  "courses": [
+    {
+      "id": "9f4f42b5-00fa-44b8-a36a-6f1371767562",
+      "name": "Introducción a Python",
+      "description": "Fundamentos del lenguaje Python para principiantes.",
+      "sections": [
+        {
+          "id": "f782cfc5-3795-4542-85b6-10574fe81ad3",
+          "name": "Sección sin contenido 1792357629154",
+          "type": "recurso",
+          "content": ""
+        },
+        {
+          "id": "71f94b56-96cd-484a-ad2a-64f58dcf5f53",
+          "name": "Introducción al tema 1792357630131",
+          "type": "leccion",
+          "content": "Contenido de la lección."
+        }
+      ]
+    },
+    {
+      "id": "60775f20-123e-465a-9aa0-a015d374f0f8",
+      "name": "Desarrollo Web con JavaScript",
+      "description": "Conceptos esenciales de JavaScript para el navegador.",
+      "sections": [
+        {
+          "id": "58adb162-efbb-41d5-949e-ead68b48b10e",
+          "name": "Variables y tipos de datos",
+          "type": "leccion",
+          "content": "Explicación de var, let, const y los tipos primitivos de JavaScript."
+        },
+        {
+          "id": "5209572f-d985-43fa-8023-4106f48e5137",
+          "name": "Cuestionario de fundamentos",
+          "type": "cuestionario",
+          "content": "Preguntas de repaso sobre variables, tipos de datos y operadores."
+        }
+      ]
+    },
+    {
+      "id": "f2c2fa69-3981-4d17-b17c-1bb0ca38cdc2",
+      "name": "Bases de Datos Relacionales",
+      "description": "Diseño y consulta de bases de datos usando SQL.",
+      "sections": [
+        {
+          "id": "914d1903-2e79-4683-b145-c768e40bdd0b",
+          "name": "Introducción a SQL",
+          "type": "leccion",
+          "content": "Qué es SQL y para qué se usa en bases de datos relacionales."
+        },
+        {
+          "id": "f998628a-ef7c-4e12-84d4-9db02befe5c1",
+          "name": "Modelo entidad-relación",
+          "type": "leccion",
+          "content": "Cómo diseñar tablas y relaciones a partir de un modelo E-R."
+        },
+        {
+          "id": "def81435-06fa-49c1-aef8-8ed0e17dea58",
+          "name": "Cuestionario de consultas",
+          "type": "cuestionario",
+          "content": "Preguntas sobre SELECT, WHERE, JOIN y agregaciones."
+        },
+        {
+          "id": "fda2c129-cec6-405a-b2d0-450d53cdadfa",
+          "name": "Diagrama de ejemplo",
+          "type": "recurso",
+          "content": "Diagrama de referencia de un esquema de base de datos normalizado."
+        },
+        {
+          "id": "2a0859ca-86df-4bf0-816b-3a8c867967b9",
+          "name": "Ejercicio de normalización",
+          "type": "cuestionario",
+          "content": "Ejercicio práctico para llevar un esquema a tercera forma normal."
+        }
+      ]
+    },
+    {
+      "id": "9ee9d325-dccb-408d-aa0e-a362664e1e2e",
+      "name": "Curso de prueba 1792357629859",
+      "description": "Descripción de prueba para el curso.",
+      "sections": []
+    }
+  ]
+}

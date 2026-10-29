@@ -1,0 +1,910 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Nandi - Panel</title>
+    <style>
+      :root {
+        --bg: #181818;
+        --panel: #212121;
+        --panel-alt: #1c1c1c;
+        --border: #3d3d3d;
+        --border-soft: #2a2a2a;
+        --input-bg: #2b2b2b;
+        --text: #f2f2f2;
+        --text-muted: #a3a3a3;
+        --accent: #d97706;
+        --accent-hover: #b45309;
+        --accent-soft: #33230f;
+        --accent-soft-text: #f0b559;
+        --danger: #7a2e2e;
+        --danger-hover: #963a34;
+        --success: #4ade80;
+        --error: #ff6b6b;
+        --radius: 10px;
+        --radius-sm: 6px;
+        --shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.55);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, 'Segoe UI', system-ui, Roboto, Arial, sans-serif;
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        -webkit-font-smoothing: antialiased;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #1f1f1f;
+        color: #fff;
+        padding: 14px 28px;
+        border-bottom: 1px solid var(--border-soft);
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      .topbar-left {
+        font-weight: 700;
+        font-size: 15px;
+        letter-spacing: 0.2px;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .topbar-left::before {
+        content: '';
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+      }
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 14px;
+      }
+      .widgets-row {
+        display: flex;
+        gap: 10px;
+        padding: 8px 28px;
+        background: #1a1a1a;
+        border-bottom: 1px solid var(--border-soft);
+      }
+      .widgets-row iframe {
+        border: 0;
+        border-radius: var(--radius-sm);
+        height: 56px;
+        overflow: hidden;
+      }
+      .widgets-row iframe:first-child {
+        flex: 1;
+      }
+      .widgets-row iframe:last-child {
+        width: 280px;
+      }
+      #current-user:hover {
+        text-decoration: underline;
+      }
+      .role-badge {
+        background: var(--accent-soft);
+        color: var(--accent-soft-text);
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+        border: 1px solid rgba(217, 119, 6, 0.35);
+      }
+      #logout-btn {
+        background: transparent;
+        color: #d99a9a;
+        border: 1px solid var(--danger);
+        padding: 6px 14px;
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 600;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease;
+      }
+      #logout-btn:hover {
+        background: var(--danger);
+        color: #fff;
+      }
+      main {
+        max-width: 1440px;
+        margin: 32px auto;
+        padding: 0 28px 60px;
+      }
+      .layout {
+        display: flex;
+        gap: 24px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+      }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--border-soft);
+        border-radius: var(--radius);
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+      .courses-column {
+        width: 300px;
+        flex-shrink: 0;
+      }
+      .detail-column {
+        flex: 1;
+        min-width: 320px;
+        animation: fadeIn 0.18s ease;
+      }
+      .courses-header,
+      .sections-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+        gap: 10px;
+      }
+      h2 {
+        font-size: 17px;
+        font-weight: 700;
+        margin: 0 0 16px;
+        color: var(--text);
+        letter-spacing: 0.1px;
+      }
+      h3 {
+        font-size: 14px;
+        font-weight: 700;
+        margin: 0;
+        color: var(--text);
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 9px 10px;
+        margin-bottom: 14px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        background: var(--input-bg);
+        color: #eee;
+        font-size: 14px;
+        font-family: inherit;
+        transition:
+          border-color 0.15s ease,
+          box-shadow 0.15s ease;
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+      }
+      textarea {
+        min-height: 90px;
+        resize: vertical;
+      }
+      button {
+        font-family: inherit;
+      }
+      .btn-small {
+        padding: 8px 16px;
+        border: none;
+        border-radius: var(--radius-sm);
+        background: var(--accent);
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        transition:
+          background 0.15s ease,
+          transform 0.1s ease;
+      }
+      .btn-small:hover {
+        background: var(--accent-hover);
+      }
+      .btn-small:active {
+        transform: scale(0.96);
+      }
+      .btn-small.secondary {
+        background: #303030;
+        color: #eee;
+      }
+      .btn-small.secondary:hover {
+        background: #3a3a3a;
+      }
+      ul.list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      ul.list li {
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        margin-bottom: 10px;
+        transition:
+          border-color 0.15s ease,
+          background 0.15s ease,
+          transform 0.1s ease;
+      }
+      ul.list li.selectable {
+        cursor: pointer;
+      }
+      ul.list li.selectable:hover {
+        border-color: #5a5a5a;
+        transform: translateX(2px);
+      }
+      ul.list li.selected {
+        border-color: var(--accent);
+        background: var(--accent-soft);
+        box-shadow: inset 3px 0 0 var(--accent);
+      }
+      .item-title {
+        font-weight: 600;
+        color: var(--text);
+      }
+      .item-sub {
+        font-size: 12.5px;
+        color: var(--text-muted);
+        margin-top: 5px;
+        line-height: 1.5;
+      }
+      .section-box {
+        background: var(--panel-alt);
+        border-color: var(--border-soft);
+      }
+      .section-box:hover {
+        border-color: #4a4a4a;
+        transform: none;
+      }
+      .section-type-tag {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        background: var(--accent-soft);
+        color: var(--accent-soft-text);
+        padding: 3px 9px;
+        border-radius: 20px;
+        margin: 7px 0;
+      }
+      .section-box-actions {
+        margin-top: 10px;
+        display: flex;
+        gap: 8px;
+      }
+      .empty-hint {
+        color: var(--text-muted);
+        font-size: 13px;
+        text-align: center;
+        padding: 24px 8px;
+      }
+      .msg {
+        font-size: 13px;
+        margin-top: 8px;
+        min-height: 16px;
+        font-weight: 500;
+      }
+      .msg.error {
+        color: var(--error);
+      }
+      .msg.ok {
+        color: var(--success);
+      }
+
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(2px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+        padding: 16px;
+        animation: fadeIn 0.15s ease;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      .modal {
+        background: var(--panel);
+        border: 1px solid var(--border-soft);
+        padding: 26px;
+        border-radius: var(--radius);
+        width: 380px;
+        max-width: 100%;
+        box-shadow: var(--shadow-lg);
+        animation: scaleIn 0.15s ease;
+      }
+      .modal-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 4px;
+      }
+      .modal-actions button {
+        flex: 1;
+        padding: 10px;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.96) translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1f3d2b;
+        color: #b6f0c8;
+        border: 1px solid #2f6b45;
+        padding: 12px 20px;
+        border-radius: var(--radius-sm);
+        font-size: 13px;
+        font-weight: 600;
+        box-shadow: var(--shadow-lg);
+        z-index: 200;
+        animation: toastIn 0.18s ease;
+      }
+      @keyframes toastIn {
+        from {
+          opacity: 0;
+          transform: translate(-50%, 8px);
+        }
+        to {
+          opacity: 1;
+          transform: translate(-50%, 0);
+        }
+      }
+
+      .spinner-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 300;
+      }
+      .spinner-overlay .spinner {
+        width: 52px;
+        height: 52px;
+        border: 5px solid rgba(255, 255, 255, 0.2);
+        border-top-color: var(--accent);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-left">My Panel</div>
+      <div class="topbar-right">
+        <span id="current-user" data-testid="current-user"></span>
+        <span id="current-role" class="role-badge" data-testid="current-role"></span>
+        <button id="logout-btn" data-testid="logout-btn">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <div class="widgets-row">
+      <iframe data-testid="help-widget-frame" src="help-widget.html" title="Ayuda"></iframe>
+      <iframe
+        data-testid="preferences-widget-frame"
+        src="preferences-widget.html"
+        title="Preferencias"
+      ></iframe>
+    </div>
+
+    <main>
+      <div class="layout">
+        <div class="panel courses-column">
+          <div class="courses-header">
+            <h2>Cursos</h2>
+            <button id="add-course-btn" class="btn-small" data-testid="add-course-btn" hidden>
+              + Nuevo curso
+            </button>
+          </div>
+          <ul class="list" id="courses-list" data-testid="courses-list"></ul>
+        </div>
+        <div class="panel detail-column" id="course-detail" data-testid="course-detail">
+          <p class="empty-hint">Seleccione un curso para ver su detalle</p>
+        </div>
+      </div>
+    </main>
+
+    <div class="modal-overlay" id="modal-overlay" data-testid="modal-overlay" hidden>
+      <div class="modal">
+        <h2 id="modal-title"></h2>
+        <form id="modal-form" novalidate>
+          <div id="modal-fields"></div>
+          <div class="msg" id="modal-msg" data-testid="modal-msg"></div>
+          <div class="modal-actions">
+            <button
+              type="button"
+              class="btn-small secondary"
+              id="modal-cancel"
+              data-testid="modal-cancel"
+            >
+              Cancelar
+            </button>
+            <button type="submit" class="btn-small" data-testid="modal-submit">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" data-testid="toast" hidden></div>
+
+    <div class="spinner-overlay" id="spinner" data-testid="spinner" hidden>
+      <div class="spinner"></div>
+    </div>
+
+    <script>
+      (function () {
+        var session = JSON.parse(localStorage.getItem('sut_session') || 'null');
+        if (!session) {
+          window.location.href = '/login.html';
+          return;
+        }
+
+        var SECTION_TYPE_LABELS = {
+          leccion: 'Lección',
+          cuestionario: 'Cuestionario',
+          recurso: 'Recurso',
+        };
+
+        var SECTION_TYPE_ICONS = {
+          leccion: '📘',
+          cuestionario: '📝',
+          recurso: '📎',
+        };
+
+        document.getElementById('current-user').textContent = session.user;
+        document.getElementById('current-role').textContent =
+          session.role === 'admin' ? 'Admin' : 'Writer';
+
+        document.getElementById('current-user').style.cursor = 'pointer';
+        document.getElementById('current-user').addEventListener('click', function () {
+          window.open('/profile.html', 'profile', 'width=380,height=280');
+        });
+
+        document.getElementById('logout-btn').addEventListener('click', function () {
+          localStorage.removeItem('sut_session');
+          window.location.href = '/login.html';
+        });
+
+        var selectedCourseId = null;
+
+        var courseDetail = document.getElementById('course-detail');
+        var coursesList = document.getElementById('courses-list');
+        var addCourseBtn = document.getElementById('add-course-btn');
+
+        var modalOverlay = document.getElementById('modal-overlay');
+        var modalTitle = document.getElementById('modal-title');
+        var modalFields = document.getElementById('modal-fields');
+        var modalForm = document.getElementById('modal-form');
+        var modalMsg = document.getElementById('modal-msg');
+        var modalCancel = document.getElementById('modal-cancel');
+
+        modalCancel.addEventListener('click', closeModal);
+
+        function closeModal() {
+          modalOverlay.hidden = true;
+          modalForm.onsubmit = null;
+          modalMsg.textContent = '';
+          modalMsg.className = 'msg';
+        }
+
+        var spinnerEl = document.getElementById('spinner');
+
+        function showSpinner() {
+          spinnerEl.hidden = false;
+        }
+
+        function hideSpinner() {
+          spinnerEl.hidden = true;
+        }
+
+        function wait(ms) {
+          return new Promise(function (resolve) {
+            setTimeout(resolve, ms);
+          });
+        }
+
+        // Simula una demora de "procesamiento" luego de que el servidor confirmó el
+        // guardado: 50% de las veces entre 10-15s, 30% entre 5-10s, 20% entre 0-5s.
+        function randomSaveDelayMs() {
+          var roll = Math.random();
+          var minSeconds, maxSeconds;
+          if (roll < 0.5) {
+            minSeconds = 10;
+            maxSeconds = 15;
+          } else if (roll < 0.8) {
+            minSeconds = 5;
+            maxSeconds = 10;
+          } else {
+            minSeconds = 0;
+            maxSeconds = 5;
+          }
+          var seconds = minSeconds + Math.random() * (maxSeconds - minSeconds);
+          return Math.round(seconds * 1000);
+        }
+
+        var toastEl = document.getElementById('toast');
+        var toastTimer = null;
+
+        function showToast(message) {
+          toastEl.textContent = message;
+          toastEl.hidden = false;
+          if (toastTimer) clearTimeout(toastTimer);
+          toastTimer = setTimeout(function () {
+            toastEl.hidden = true;
+          }, 3000);
+        }
+
+        function openModal(title) {
+          modalTitle.textContent = title;
+          modalMsg.textContent = '';
+          modalMsg.className = 'msg';
+          modalOverlay.hidden = false;
+        }
+
+        function escapeHtml(str) {
+          var div = document.createElement('div');
+          div.textContent = str == null ? '' : str;
+          return div.innerHTML;
+        }
+
+        function escapeAttr(str) {
+          return escapeHtml(str).replace(/"/g, '&quot;');
+        }
+
+        if (session.role === 'admin') {
+          addCourseBtn.hidden = false;
+          addCourseBtn.addEventListener('click', function () {
+            openCourseModal('create', null);
+          });
+        }
+
+        function openCourseModal(mode, course) {
+          course = course || { name: '', description: '' };
+          openModal(mode === 'create' ? 'Nuevo curso' : 'Editar curso');
+          modalFields.innerHTML =
+            '<label for="modal-course-name">Nombre</label>' +
+            '<input id="modal-course-name" data-testid="modal-course-name" value="' +
+            escapeAttr(course.name) +
+            '">' +
+            '<label for="modal-course-description">Descripción</label>' +
+            '<textarea id="modal-course-description" data-testid="modal-course-description">' +
+            escapeHtml(course.description) +
+            '</textarea>';
+
+          modalForm.onsubmit = async function (ev) {
+            ev.preventDefault();
+            var name = document.getElementById('modal-course-name').value.trim();
+            var description = document.getElementById('modal-course-description').value.trim();
+
+            if (!name) {
+              modalMsg.textContent = 'El nombre es obligatorio';
+              modalMsg.className = 'msg error';
+              return;
+            }
+            if (!description) {
+              modalMsg.textContent = 'La descripción es obligatoria';
+              modalMsg.className = 'msg error';
+              return;
+            }
+
+            var url = mode === 'create' ? '/api/courses' : '/api/courses/' + course.id;
+            var method = mode === 'create' ? 'POST' : 'PUT';
+
+            showSpinner();
+            var res = await fetch(url, {
+              method: method,
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name: name, description: description }),
+            });
+
+            if (!res.ok) {
+              hideSpinner();
+              modalMsg.textContent = 'No se pudo guardar el curso';
+              modalMsg.className = 'msg error';
+              return;
+            }
+
+            await wait(randomSaveDelayMs());
+            hideSpinner();
+
+            showToast(mode === 'create' ? 'Curso creado' : 'Curso actualizado');
+            closeModal();
+            loadCourses();
+            if (mode === 'edit' && selectedCourseId === course.id) {
+              selectCourse(course.id);
+            }
+          };
+        }
+
+        function openSectionModal(mode, courseId, section) {
+          section = section || { name: '', type: '', content: '' };
+          openModal(mode === 'create' ? 'Nueva sección' : 'Editar sección');
+          var options = ['leccion', 'cuestionario', 'recurso']
+            .map(function (type) {
+              var selected = type === section.type ? ' selected' : '';
+              return (
+                '<option value="' +
+                type +
+                '"' +
+                selected +
+                '>' +
+                SECTION_TYPE_ICONS[type] +
+                ' ' +
+                SECTION_TYPE_LABELS[type] +
+                '</option>'
+              );
+            })
+            .join('');
+
+          modalFields.innerHTML =
+            '<label for="modal-section-name">Nombre</label>' +
+            '<input id="modal-section-name" data-testid="modal-section-name" value="' +
+            escapeAttr(section.name) +
+            '">' +
+            '<label for="modal-section-type">Tipo</label>' +
+            '<select id="modal-section-type" data-testid="modal-section-type">' +
+            '<option value="">Seleccione un tipo</option>' +
+            options +
+            '</select>' +
+            '<label for="modal-section-content">Descripción</label>' +
+            '<textarea id="modal-section-content" data-testid="modal-section-content">' +
+            escapeHtml(section.content) +
+            '</textarea>';
+
+          modalForm.onsubmit = async function (ev) {
+            ev.preventDefault();
+            var name = document.getElementById('modal-section-name').value.trim();
+            var type = document.getElementById('modal-section-type').value;
+            var content = document.getElementById('modal-section-content').value.trim();
+
+            if (!name) {
+              modalMsg.textContent = 'El nombre es obligatorio';
+              modalMsg.className = 'msg error';
+              return;
+            }
+            if (!type) {
+              modalMsg.textContent = 'Debe seleccionar un tipo de sección';
+              modalMsg.className = 'msg error';
+              return;
+            }
+            if (!content) {
+              modalMsg.textContent = 'El contenido es obligatorio';
+              modalMsg.className = 'msg error';
+              return;
+            }
+
+            var url =
+              mode === 'create'
+                ? '/api/courses/' + courseId + '/sections'
+                : '/api/courses/' + courseId + '/sections/' + section.id;
+            var method = mode === 'create' ? 'POST' : 'PUT';
+
+            showSpinner();
+            var res = await fetch(url, {
+              method: method,
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name: name, type: type, content: content }),
+            });
+
+            if (!res.ok) {
+              hideSpinner();
+              modalMsg.textContent = 'No se pudo guardar la sección';
+              modalMsg.className = 'msg error';
+              return;
+            }
+
+            await wait(randomSaveDelayMs());
+            hideSpinner();
+
+            showToast(mode === 'create' ? 'Sección creada' : 'Sección actualizada');
+            closeModal();
+            selectCourse(courseId);
+          };
+        }
+
+        async function loadCourses() {
+          showSpinner();
+          try {
+            var res = await fetch('/api/courses');
+            var courses = await res.json();
+            coursesList.innerHTML =
+              courses
+                .map(function (c) {
+                  var selectedClass = c.id === selectedCourseId ? ' selected' : '';
+                  return (
+                    '<li class="selectable' +
+                    selectedClass +
+                    '" data-testid="course-item" data-course-id="' +
+                    c.id +
+                    '">' +
+                    '<div class="item-title">' +
+                    escapeHtml(c.name) +
+                    '</div>' +
+                    '</li>'
+                  );
+                })
+                .join('') || '<li>No hay cursos aún</li>';
+
+            coursesList.querySelectorAll('li[data-course-id]').forEach(function (li) {
+              li.addEventListener('click', function () {
+                selectCourse(li.getAttribute('data-course-id'));
+              });
+            });
+          } finally {
+            hideSpinner();
+          }
+        }
+
+        async function selectCourse(courseId) {
+          selectedCourseId = courseId;
+          coursesList.querySelectorAll('li[data-course-id]').forEach(function (li) {
+            li.classList.toggle('selected', li.getAttribute('data-course-id') === courseId);
+          });
+
+          var res = await fetch('/api/courses/' + courseId);
+          var course = await res.json();
+          renderCourseDetail(course);
+        }
+
+        function renderCourseDetail(course) {
+          var canManageSections = session.role === 'writer';
+
+          var html =
+            '<h2>' +
+            escapeHtml(course.name) +
+            '</h2>' +
+            '<p data-testid="course-detail-description">' +
+            escapeHtml(course.description) +
+            '</p>';
+
+          if (session.role === 'admin') {
+            html +=
+              '<button class="btn-small" id="edit-course-btn" data-testid="edit-course-btn">Editar curso</button>';
+          }
+
+          html +=
+            '<div class="sections-header">' +
+            '<h3>Secciones</h3>' +
+            (canManageSections
+              ? '<button class="btn-small" id="add-section-btn" data-testid="add-section-btn">Agregar sección</button>'
+              : '') +
+            '</div>' +
+            '<ul class="list" id="sections-list" data-testid="sections-list">' +
+            (course.sections
+              .map(function (s) {
+                var actions = canManageSections
+                  ? '<div class="section-box-actions">' +
+                    '<button class="btn-small secondary" data-testid="edit-section-btn" data-section-id="' +
+                    s.id +
+                    '">Editar</button>' +
+                    '<button class="btn-small secondary" data-testid="delete-section-btn" data-section-id="' +
+                    s.id +
+                    '">Eliminar</button>' +
+                    '</div>'
+                  : '';
+                return (
+                  '<li class="section-box" data-testid="section-item" data-section-id="' +
+                  s.id +
+                  '">' +
+                  '<div class="item-title">' +
+                  escapeHtml(s.name) +
+                  '</div>' +
+                  '<span class="section-type-tag">' +
+                  (SECTION_TYPE_ICONS[s.type] || '') +
+                  ' ' +
+                  (SECTION_TYPE_LABELS[s.type] || s.type) +
+                  '</span>' +
+                  '<div class="item-sub">' +
+                  escapeHtml(s.content) +
+                  '</div>' +
+                  actions +
+                  '</li>'
+                );
+              })
+              .join('') || '<li class="empty-hint">Sin secciones aún</li>') +
+            '</ul>';
+
+          courseDetail.innerHTML = html;
+
+          if (session.role === 'admin') {
+            document.getElementById('edit-course-btn').addEventListener('click', function () {
+              openCourseModal('edit', course);
+            });
+          }
+
+          if (canManageSections) {
+            document.getElementById('add-section-btn').addEventListener('click', function () {
+              openSectionModal('create', course.id, null);
+            });
+            courseDetail
+              .querySelectorAll('[data-testid="edit-section-btn"]')
+              .forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                  var sectionId = btn.getAttribute('data-section-id');
+                  var section = course.sections.find(function (s) {
+                    return s.id === sectionId;
+                  });
+                  openSectionModal('edit', course.id, section);
+                });
+              });
+            courseDetail
+              .querySelectorAll('[data-testid="delete-section-btn"]')
+              .forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                  deleteSection(course.id, btn.getAttribute('data-section-id'));
+                });
+              });
+          }
+        }
+
+        async function deleteSection(courseId, sectionId) {
+          if (!window.confirm('¿Eliminar esta sección?')) return;
+          var res = await fetch('/api/courses/' + courseId + '/sections/' + sectionId, {
+            method: 'DELETE',
+          });
+          if (res.ok) {
+            showToast('Sección eliminada');
+            selectCourse(courseId);
+          } else {
+            window.alert('No se pudo eliminar la sección');
+          }
+        }
+
+        loadCourses();
+      })();
+    </script>
+  </body>
+</html>

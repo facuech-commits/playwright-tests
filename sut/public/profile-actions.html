@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Nandi - Perfil (acciones)</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 4px 0 0;
+        font-family: -apple-system, 'Segoe UI', system-ui, Roboto, Arial, sans-serif;
+        background: transparent;
+      }
+      .btn-small {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        background: #d97706;
+        color: #fff;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .btn-small:hover {
+        background: #b45309;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="btn-small profile-close-css" id="profile-close">Cerrar</button>
+
+    <script>
+      // Este botón vive en un iframe aparte: cierra la ventana que lo contiene
+      // (el popup de perfil), no el propio iframe — por eso window.parent.close()
+      // y no window.close().
+      document.getElementById('profile-close').addEventListener('click', function () {
+        window.parent.close();
+      });
+    </script>
+  </body>
+</html>

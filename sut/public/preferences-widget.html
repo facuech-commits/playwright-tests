@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Nandi - Preferencias</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+      }
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0 12px;
+        font-family: -apple-system, 'Segoe UI', system-ui, Roboto, Arial, sans-serif;
+        background: #1c1c1c;
+      }
+      .btn-small {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        background: #303030;
+        color: #eee;
+        font-size: 12.5px;
+        font-weight: 600;
+        white-space: nowrap;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .btn-small:hover {
+        background: #3a3a3a;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Widget propio, embebido aparte para versionarse/desplegarse
+       independiente del shell principal. El estado del toggle vive acá
+       adentro, aislado del resto de la app. -->
+    <button class="btn-small" id="compact-mode-toggle">Activar modo compacto</button>
+
+    <script>
+      var enabled = false;
+      var btn = document.getElementById('compact-mode-toggle');
+      btn.addEventListener('click', function () {
+        enabled = !enabled;
+        btn.textContent = enabled ? 'Desactivar modo compacto' : 'Activar modo compacto';
+      });
+    </script>
+  </body>
+</html>

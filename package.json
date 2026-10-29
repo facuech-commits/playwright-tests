@@ -1,0 +1,30 @@
+{
+  "name": "playwright-tests",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "show-report": "playwright show-report reports",
+    "install:browsers": "playwright install chromium",
+    "sut": "node sut/reset-data.js && node sut/server.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prettier": "prettier --check .",
+    "prettier:fix": "prettier --write .",
+    "format": "npm run prettier:fix && npm run lint:fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@eslint/js": "9.28.0",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "22.13.10",
+    "dotenv": "16.5.0",
+    "eslint": "9.28.0",
+    "eslint-config-prettier": "10.1.5",
+    "prettier": "3.3.3",
+    "typescript-eslint": "8.33.0"
+  }
+}

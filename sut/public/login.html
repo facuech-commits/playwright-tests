@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <title>Nandi - Login</title>
+    <style>
+      :root {
+        --bg: #181818;
+        --panel: #212121;
+        --border: #3d3d3d;
+        --border-soft: #2a2a2a;
+        --input-bg: #2b2b2b;
+        --text: #f2f2f2;
+        --text-muted: #a3a3a3;
+        --accent: #d97706;
+        --accent-hover: #b45309;
+        --accent-soft: #33230f;
+        --error: #ff6b6b;
+        --radius: 10px;
+        --radius-sm: 6px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: -apple-system, 'Segoe UI', system-ui, Roboto, Arial, sans-serif;
+        background: radial-gradient(circle at 50% 0%, rgba(217, 119, 6, 0.08), transparent 55%),
+          var(--bg);
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+        -webkit-font-smoothing: antialiased;
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border-soft);
+        padding: 36px 32px;
+        border-radius: var(--radius);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5);
+        width: 300px;
+        animation: riseIn 0.2s ease;
+      }
+      .logo-dot {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        background: var(--accent);
+        margin: 0 auto 18px;
+        box-shadow: 0 0 0 6px var(--accent-soft);
+      }
+      h1 {
+        font-size: 20px;
+        font-weight: 700;
+        margin: 0;
+        text-align: center;
+        letter-spacing: 0.2px;
+        color: var(--accent);
+      }
+      .subtitle {
+        font-size: 13px;
+        color: var(--text-muted);
+        text-align: center;
+        margin: 4px 0 24px;
+      }
+      label {
+        display: block;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: var(--text-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+      }
+      input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 16px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        background: var(--input-bg);
+        color: #eee;
+        font-size: 14px;
+        transition:
+          border-color 0.15s ease,
+          box-shadow 0.15s ease;
+      }
+      input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-soft);
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: var(--radius-sm);
+        background: var(--accent);
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition:
+          background 0.15s ease,
+          transform 0.1s ease;
+      }
+      button:hover {
+        background: var(--accent-hover);
+      }
+      button:active {
+        transform: scale(0.98);
+      }
+      #error {
+        color: var(--error);
+        font-size: 13px;
+        margin-top: 12px;
+        text-align: center;
+        min-height: 16px;
+      }
+      @keyframes riseIn {
+        from {
+          opacity: 0;
+          transform: translateY(6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .test-users-footer {
+        position: fixed;
+        bottom: 14px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 11px;
+        color: var(--text-muted);
+        opacity: 0.6;
+        letter-spacing: 0.2px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="logo-dot"></div>
+      <h1>Nandi</h1>
+      <p class="subtitle">Iniciar sesión</p>
+      <form id="login-form">
+        <label for="user">Usuario</label>
+        <input id="user" name="user" type="text" autocomplete="username" required />
+        <label for="pass">Contraseña</label>
+        <input
+          id="pass"
+          name="pass"
+          type="password"
+          class="login-pass-css"
+          autocomplete="current-password"
+          required
+        />
+        <button type="submit">Ingresar</button>
+        <div id="error" data-testid="login-error"></div>
+      </form>
+    </div>
+
+    <footer class="test-users-footer" data-testid="test-users-footer">
+      admin: Carlos / VazFerreira &nbsp;·&nbsp; writer: Mario / Benedetti
+    </footer>
+
+    <script>
+      document.getElementById('login-form').addEventListener('submit', async function (ev) {
+        ev.preventDefault();
+        var user = document.getElementById('user').value.trim();
+        var pass = document.getElementById('pass').value;
+        var errorEl = document.getElementById('error');
+        errorEl.textContent = '';
+
+        try {
+          var res = await fetch('/api/users');
+          var users = await res.json();
+          var match = users.find(function (u) {
+            return u.user === user && u.pass === pass;
+          });
+
+          if (!match) {
+            errorEl.textContent = 'Usuario o contraseña incorrectos';
+            return;
+          }
+
+          localStorage.setItem(
+            'sut_session',
+            JSON.stringify({ user: match.user, role: match.role }),
+          );
+          window.location.href = '/home.html';
+        } catch (err) {
+          errorEl.textContent = 'No se pudo conectar con la API';
+        }
+      });
+    </script>
+  </body>
+</html>
