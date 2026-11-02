@@ -44,27 +44,28 @@ test.describe('Catálogo', () => {
     menuTask,
     eventsListTask,
   }) => {
-    const { input } = await Data.getCase(EVENTS_DATA_FILE, 'CP06');
-    await loginFormTask.login(input.usuario, input.clave);
+    const { input, expected } = await Data.getCase(EVENTS_DATA_FILE, 'CP06');
+
+    await loginFormTask.login(input.user, input.pass);
     await menuTask.goToEvents();
-    await eventsListTask.expectCategorySelected(input.categoria);
+    await eventsListTask.expectCategorySelected(input.category);
 
-    // pagina 1
-    await eventsListTask.verificarPaginaActiva('1');
-    await eventsListTask.verificarDeshabilitado('Anterior');
-    const primero = await eventsListTask.primerEvento();
+    await eventsListTask.expectPageActive('1');
+    await eventsListTask.expectPageButtonDisabled('Anterior');
+    const firstTitle = await eventsListTask.firstEventTitle();
 
-    await eventsListTask.clickPagina('2');
-    await eventsListTask.verificarPaginaActiva('2');
-    await eventsListTask.verificarPrimerEventoDistinto(primero);
-    await eventsListTask.clickPagina('Siguiente');
-    await eventsListTask.verificarPaginaActiva('3');
-    await eventsListTask.clickPagina('Anterior');
-    await eventsListTask.verificarPaginaActiva('2');
+    await eventsListTask.goToPage('2');
+    await eventsListTask.expectPageActive('2');
+    await eventsListTask.expectFirstEventNot(firstTitle);
 
-    // ultima pagina
-    await eventsListTask.clickPagina(input.ultimaPagina);
-    await eventsListTask.verificarPaginaActiva(input.ultimaPagina);
-    await eventsListTask.verificarDeshabilitado('Siguiente');
+    await eventsListTask.goToPage('Siguiente');
+    await eventsListTask.expectPageActive('3');
+
+    await eventsListTask.goToPage('Anterior');
+    await eventsListTask.expectPageActive('2');
+
+    await eventsListTask.goToPage(expected.lastPage);
+    await eventsListTask.expectPageActive(expected.lastPage);
+    await eventsListTask.expectPageButtonDisabled('Siguiente');
   });
 });

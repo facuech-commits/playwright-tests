@@ -16,12 +16,8 @@ export const EVENTS_CASES = [
   {
     id: 'CP06',
     description: 'Navegar la paginación del listado',
-    input: {
-      usuario: USERS.TESTER_15.user,
-      clave: USERS.TESTER_15.pass,
-      categoria: 'Todas',
-      ultimaPagina: '4',
-    },
+    input: { user: USERS.TESTER_15.user, pass: USERS.TESTER_15.pass, category: 'Todas' },
+    expected: { lastPage: '4' },
   },
 ];
 

@@ -46,24 +46,27 @@ export class EventsListTask {
     await this.eventsList.cards.expectCount(Number(match[1]));
   }
 
-  async clickPagina(texto: string): Promise<void> {
-    await this.eventsList.botonPagina(texto).click();
+  async goToPage(text: string): Promise<void> {
+    await this.eventsList.pageButton(text).click();
   }
 
-  async verificarPaginaActiva(texto: string): Promise<void> {
-    await expect(await this.eventsList.botonPagina(texto).raw()).toHaveClass(/active/);
+  async expectPageActive(text: string): Promise<void> {
+    const locator = await this.eventsList.pageButton(text).raw();
+    await expect(locator).toHaveClass(/active/);
   }
 
-  async verificarDeshabilitado(texto: string): Promise<void> {
-    await expect(await this.eventsList.botonPagina(texto).raw()).toBeDisabled();
+  async expectPageButtonDisabled(text: string): Promise<void> {
+    const locator = await this.eventsList.pageButton(text).raw();
+    await expect(locator).toBeDisabled();
   }
 
-  async primerEvento(): Promise<string> {
+  async firstEventTitle(): Promise<string> {
     return ((await this.eventsList.cards.nth(0).cssChild('h3').text()) ?? '').trim();
   }
 
-  async verificarPrimerEventoDistinto(titulo: string): Promise<void> {
-    await expect(await this.eventsList.cards.nth(0).cssChild('h3').raw()).not.toHaveText(titulo);
+  async expectFirstEventNot(title: string): Promise<void> {
+    const locator = await this.eventsList.cards.nth(0).cssChild('h3').raw();
+    await expect(locator).not.toHaveText(title);
   }
 
   private async cardTitles(): Promise<string[]> {

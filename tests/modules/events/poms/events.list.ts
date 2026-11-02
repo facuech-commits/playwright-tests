@@ -12,9 +12,8 @@ export class EventsList {
     this.cards = app.byCss('#eventGrid .event-card');
   }
 
-  // sirve para los numeros y para Anterior / Siguiente
-  botonPagina(texto: string): Element {
-    return this.app.byCss(`#eventPager button:has-text("${texto}")`);
+  pageButton(text: string): Element {
+    return this.app.byCss(`#eventPager button:has-text("${text}")`);
   }
 
   categoryButton(name: string): Element {
