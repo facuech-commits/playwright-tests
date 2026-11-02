@@ -38,4 +38,34 @@ test.describe('Catálogo', () => {
     await eventsListTask.expectAllTitlesContain(input.search);
     await eventsListTask.expectCountMatchesVisibleCards();
   });
+
+  test('CP06 - Navegar la paginación del listado', async ({
+    loginFormTask,
+    menuTask,
+    eventsListTask,
+  }) => {
+    const { input } = await Data.getCase(EVENTS_DATA_FILE, 'CP06');
+
+    await loginFormTask.login(input.user, input.pass);
+    await menuTask.goToEvents();
+    await eventsListTask.expectCategorySelected(input.category);
+
+    await eventsListTask.expectPageActive('1');
+    await eventsListTask.expectPrevDisabled();
+    const firstTitle = await eventsListTask.firstEventTitle();
+
+    await eventsListTask.goToPage(input.page);
+    await eventsListTask.expectPageActive(input.page);
+    await eventsListTask.expectFirstEventIsNot(firstTitle);
+
+    await eventsListTask.nextPage();
+    await eventsListTask.expectPageActive('3');
+
+    await eventsListTask.prevPage();
+    await eventsListTask.expectPageActive('2');
+
+    const lastPage = await eventsListTask.goToLastPage();
+    await eventsListTask.expectPageActive(lastPage);
+    await eventsListTask.expectNextDisabled();
+  });
 });
