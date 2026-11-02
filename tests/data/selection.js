@@ -61,6 +61,17 @@ export const SELECTION_CASES = [
       cartCount: '0',
     },
   },
+  {
+    id: 'CP12',
+    description: 'Código promocional inválido',
+    input: {
+      user: USERS.TESTER_15.user,
+      pass: USERS.TESTER_15.pass,
+      event: 'Festival de Folklore Andresito',
+      promo: 'CODIGOFALSO123',
+    },
+    expected: { subtotal: '$500', discount: '-$0', total: '$500' },
+  },
 ];
 
 export default SELECTION_CASES;
