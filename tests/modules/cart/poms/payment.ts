@@ -2,6 +2,7 @@ import { App } from 'tests/core/App';
 import { Element } from 'tests/core/Element';
 
 export class Payment {
+  readonly heading: Element;
   readonly total: Element;
   readonly payButton: Element;
   readonly method: Element;
@@ -12,6 +13,7 @@ export class Payment {
   readonly viewTicketButton: Element;
 
   constructor(readonly app: App) {
+    this.heading = app.byXPath("//h1[text()='Pago']");
     this.total = app.byCss('.summary .total');
     this.payButton = app.byId('payBtn');
     this.method = app.byId('method');
