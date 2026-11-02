@@ -8,6 +8,24 @@ export class EventDetailTask {
     await this.eventDetail.backButton.click();
   }
 
+  async decrease(): Promise<void> {
+    await this.eventDetail.minusButton.click();
+  }
+
+  async increase(times = 1): Promise<void> {
+    for (let i = 0; i < times; i++) {
+      await this.eventDetail.plusButton.click();
+    }
+  }
+
+  async expectQuantity(value: string): Promise<void> {
+    await this.eventDetail.quantity.expectText(value);
+  }
+
+  async expectHelpText(text: string): Promise<void> {
+    await this.eventDetail.helpText.expectText(text);
+  }
+
   async expectVisible(): Promise<void> {
     await this.eventDetail.title.expectVisible();
   }
