@@ -29,4 +29,32 @@ test.describe('Selección y carrito', () => {
     await eventDetailTask.increase();
     await eventDetailTask.expectQuantity(expected.max);
   });
+
+  test('CP09 - Un evento sin stock no se puede agregar al carrito', async ({
+    loginFormTask,
+    menuTask,
+    eventsListTask,
+    eventDetailTask,
+  }) => {
+    // falla porque el evento sin stock no figura agotado y se puede agregar (ver casos de prueba)
+    const { input, expected } = await Data.getCase(SELECTION_DATA_FILE, 'CP09');
+
+    await loginFormTask.login(input.user, input.pass);
+    await menuTask.goToEvents();
+    await eventsListTask.expectListVisible();
+    await menuTask.expectCartCount(expected.cartCount);
+
+    await eventsListTask.search(input.search);
+    await eventsListTask.expectCardSoldOut(
+      input.search,
+      `${expected.stock} entradas`,
+      expected.status,
+    );
+
+    await eventsListTask.openDetail(input.search);
+    await eventDetailTask.expectSoldOut(expected.stock, expected.status);
+
+    await eventDetailTask.expectAddToCartDisabled();
+    await menuTask.expectCartCount(expected.cartCount);
+  });
 });

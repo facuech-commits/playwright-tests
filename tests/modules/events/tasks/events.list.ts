@@ -39,6 +39,12 @@ export class EventsListTask {
     await this.eventsList.cards.filter(title).cssChild('button:has-text("Ver detalle")').click();
   }
 
+  async expectCardSoldOut(title: string, stock: string, status: string): Promise<void> {
+    const card = this.eventsList.cards.filter(title);
+    await expect(await card.cssChild('.stock-line').raw()).toContainText(stock);
+    await card.cssChild('.chip').filter(status).expectVisible();
+  }
+
   async expectListVisible(): Promise<void> {
     await this.eventsList.cards.nth(0).expectVisible();
   }

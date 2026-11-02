@@ -22,6 +22,10 @@ export class MenuTask {
     await this.menu.logoutButton.expectVisible();
   }
 
+  async expectCartCount(count: string): Promise<void> {
+    await this.menu.cartBadge.expectText(count);
+  }
+
   async expectHidden(): Promise<void> {
     await this.menu.nav.expectHidden();
   }

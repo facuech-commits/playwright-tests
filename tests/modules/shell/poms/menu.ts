@@ -7,8 +7,10 @@ export class Menu {
   readonly ticketsLink: Element;
   readonly cartLink: Element;
   readonly logoutButton: Element;
+  readonly cartBadge: Element;
 
   constructor(readonly app: App) {
+    this.cartBadge = app.byCss('.navlinks .cart-badge');
     this.nav = app.byCss('.navlinks');
     this.eventsLink = app.byCss('.navlinks button:text-is("Eventos")');
     this.ticketsLink = app.byCss('.navlinks button:text-is("Mis entradas")');
