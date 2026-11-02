@@ -7,6 +7,8 @@ export class TicketsList {
   readonly ticketTitle: Element;
   readonly ticketInfo: Element;
   readonly ticketOwner: Element;
+  readonly ticketCode: Element;
+  readonly qr: Element;
 
   constructor(readonly app: App) {
     this.heading = app.byXPath("//h1[text()='Mis entradas']");
@@ -14,5 +16,7 @@ export class TicketsList {
     this.ticketTitle = app.byCss('.ticket h1');
     this.ticketInfo = app.byCss('.ticket');
     this.ticketOwner = app.byCss('.ticket p:has-text("Titular") strong');
+    this.ticketCode = app.byCss('.ticket p:has-text("Entrada") strong');
+    this.qr = app.byCss('.ticket .qr');
   }
 }

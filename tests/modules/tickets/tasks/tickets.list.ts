@@ -18,6 +18,30 @@ export class TicketsListTask {
     await this.ticketsList.ticketOwner.expectText(owner);
   }
 
+  async expectTicketsVisible(): Promise<void> {
+    await this.ticketsList.ticketCards.nth(0).expectVisible();
+  }
+
+  async openFirstTicket(): Promise<void> {
+    await this.ticketsList.ticketCards.nth(0).cssChild('button:has-text("Ver entrada")').click();
+  }
+
+  async expectCodeAndQr(code: string): Promise<void> {
+    await this.ticketsList.ticketCode.expectText(code);
+    await this.ticketsList.qr.expectVisible();
+  }
+
+  async expectNoPaymentData(
+    cardNumber: string,
+    validationCode: string,
+    balance: string,
+  ): Promise<void> {
+    const ticket = await this.ticketsList.ticketInfo.raw();
+    await expect(ticket).not.toContainText(cardNumber);
+    await expect(ticket).not.toContainText(validationCode);
+    await expect(ticket).not.toContainText(balance);
+  }
+
   async expectTicketCount(event: string, count: number): Promise<void> {
     await this.ticketsList.ticketCards.filter(event).expectCount(count);
   }
