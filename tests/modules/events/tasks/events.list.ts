@@ -17,6 +17,10 @@ export class EventsListTask {
     await expect(locator).toHaveClass(/active/);
   }
 
+  async expectListVisible(): Promise<void> {
+    await this.eventsList.cards.nth(0).expectVisible();
+  }
+
   async expectEventVisible(title: string): Promise<void> {
     await this.eventsList.cards.filter(title).expectVisible();
   }

@@ -3,9 +3,14 @@ import { Data } from 'tests/core/Data';
 import { ACCESS_DATA_FILE } from '../../../data/paths.js';
 
 test.describe('Acceso', () => {
-  test('CP01 - Login exitoso con usuario válido', async ({ loginFormTask, menuTask }) => {
+  test('CP01 - Login exitoso con usuario válido', async ({
+    loginFormTask,
+    menuTask,
+    eventsListTask,
+  }) => {
     const { input } = await Data.getCase(ACCESS_DATA_FILE, 'CP01');
 
+    await loginFormTask.expectStillOnLoginScreen();
     await loginFormTask.fillUser(input.user);
     await loginFormTask.fillPass(input.pass);
     await loginFormTask.expectUserValue(input.user);
@@ -14,12 +19,14 @@ test.describe('Acceso', () => {
     await loginFormTask.submit();
 
     await loginFormTask.expectLoggedIn();
+    await eventsListTask.expectListVisible();
     await menuTask.expectVisible();
   });
 
   test('CP02 - Login con contraseña incorrecta', async ({ loginFormTask, menuTask }) => {
     const { input, expected } = await Data.getCase(ACCESS_DATA_FILE, 'CP02');
 
+    await loginFormTask.expectStillOnLoginScreen();
     await loginFormTask.fillUser(input.user);
     await loginFormTask.fillPass(input.pass);
     await loginFormTask.expectUserValue(input.user);
