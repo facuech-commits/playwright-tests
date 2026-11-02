@@ -8,9 +8,7 @@ test.describe('Catálogo', () => {
     menuTask,
     eventsListTask,
   }) => {
-    // Defecto conocido (ver PDF de casos): el filtro Gaming hoy muestra eventos de otras
-    // categorías y no incluye "eSports Challenge". Este test queda en rojo a propósito
-    // hasta que se corrija, documentando el bug.
+    // falla por el bug del filtro Gaming (ver casos de prueba)
     const { input, expected } = await Data.getCase(EVENTS_DATA_FILE, 'CP04');
 
     await loginFormTask.login(input.user, input.pass);

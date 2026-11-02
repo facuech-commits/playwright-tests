@@ -25,11 +25,7 @@ export class LoginFormTask {
     await this.submit();
   }
 
-  /**
-   * EventYa muestra las credenciales inválidas con un alert() nativo. Hay que registrar
-   * el listener de diálogo antes del click: si se espera con Promise.all el click nunca
-   * resuelve, porque el alert() bloquea la página hasta que se acepta el diálogo.
-   */
+  // el error de login sale en un alert(), hay que escucharlo antes del click
   async submitExpectingAlert(): Promise<string> {
     const page = this.loginForm.app.raw;
     const dialogMessage = new Promise<string>((resolve) => {
