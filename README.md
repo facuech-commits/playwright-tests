@@ -7,31 +7,36 @@ Suite de pruebas automatizadas con [Playwright](https://playwright.dev/), con do
 
 Ambos tipos conviven en el mismo repo, organizados por módulo funcional.
 
+## Sistema bajo prueba
+
+El proyecto apunta actualmente a **EventYa** (`https://167-99-7-152.sslip.io/eventya/`), una SPA real de venta de entradas a eventos. El mock **Nandi** que se usó como prueba de humo inicial quedó de referencia, sin correr (ver más abajo).
+
+Usuarios de prueba de EventYa: `tester01`..`tester15` / `eventya01`..`eventya15` (mismo índice).
+
 ## Estructura del proyecto
 
 ```
-sut/                      Mock del sistema bajo prueba (Nandi): servidor Node + páginas HTML
+sut/                      Mock de Nandi (prueba de humo inicial, ya no se usa): servidor Node + páginas HTML
   server.js               API + servidor estático (node sut/server.js)
   reset-data.js           Repone data.json a su estado inicial (usuarios + cursos de ejemplo)
   public/                 login.html, home.html y profile.html (ventana emergente)
 
+reference-nandi/          Specs, POMs, Tasks y datasets de Nandi, de referencia (no se ejecutan)
+  modules/                login, courses, sections, profile, shell — arquitectura de ejemplo
+  data/                   Datasets de los casos de Nandi (login.js, courses.js, sections.js, users.js)
+
 tests/
   core/                   App, Element, Data, Env: la única capa que importa Playwright directo
-  data/                   Datasets de casos de prueba (login.js, courses.js, sections.js, users.js)
-  fixtures/               base.fixture.ts: arma POMs y Tasks a demanda para cada test
-  modules/                Specs, Page Objects y Tasks, organizados por módulo:
-    shell/                poms/ (toast, spinner) — elementos transversales, sin pantalla propia
-    login/e2e/            poms/ (login.form, dashboard)   tasks/ (login.form, dashboard)
-    courses/e2e/ api/     poms/ (courses.list, courses.form)   tasks/ (courses.list, courses.form)
-    sections/e2e/ api/    poms/ (sections.list, sections.form) tasks/ (sections.list, sections.form)
-    profile/e2e/          poms/ (profile)   tasks/ (profile) — perfil en ventana emergente
+  data/                   Datasets de casos de prueba de EventYa (users.js, y los que se sumen)
+  fixtures/               base.fixture.ts: arma el fixture `app`; se van agregando POMs/Tasks por módulo
+  modules/                Specs, Page Objects y Tasks de EventYa, organizados por módulo (en construcción)
 ```
 
 ## Variables de entorno
 
 Copiá `.env.example` a `.env` y ajustá los valores si hace falta. Todas tienen un default razonable, así que la suite corre igual sin `.env`.
 
-- `BASE_URL`: URL del sistema bajo prueba (por defecto, el mock Nandi en `sut/`).
+- `BASE_URL`: URL del sistema bajo prueba (por defecto, EventYa en `https://167-99-7-152.sslip.io/eventya/`).
 - `BROWSER`: motor a usar (`chromium`, `firefox` o `webkit`).
 - `HEADLESS`: `true` para correr sin ventana visible, `false` para ver el navegador.
 - `SLOW_MO`: milisegundos de espera entre cada acción de Playwright.
@@ -46,13 +51,11 @@ Instalar las dependencias del proyecto (solo hace falta la primera vez, o despu�
 npm install
 ```
 
-Levantar el mock del sistema bajo prueba:
+EventYa es un entorno remoto, así que no hace falta levantar nada local para correr la suite actual.
 
-```bash
-npm run sut
-```
+`npm run sut` solo es necesario si querés correr manualmente la suite de referencia de Nandi (`reference-nandi/`), apuntando `BASE_URL` de vuelta a `http://localhost:8000`.
 
-Opcional: reiniciar los datos de ejemplo (usuarios + cursos) antes de una corrida limpia:
+Opcional (solo para Nandi): reiniciar los datos de ejemplo (usuarios + cursos) antes de una corrida limpia:
 
 ```bash
 npm run reset-data

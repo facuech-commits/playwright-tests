@@ -1,4 +1,4 @@
+// Usuarios de prueba de EventYa: tester01..tester15 / eventya01..eventya15 (mismo índice).
 export const USERS = {
-  ADMIN: { user: 'Carlos', pass: 'VazFerreira', role: 'admin' },
-  WRITER: { user: 'Mario', pass: 'Benedetti', role: 'writer' },
+  TESTER_15: { user: 'tester15', pass: 'eventya15' },
 };

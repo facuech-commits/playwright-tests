@@ -28,7 +28,7 @@ export default defineConfig({
       args: ['--start-maximized'],
     },
 
-    baseURL: Env.str('BASE_URL', 'http://localhost:8000'),
+    baseURL: Env.str('BASE_URL', 'https://167-99-7-152.sslip.io/eventya/'),
 
     actionTimeout: Number(process.env.E2E_ACTION_TIMEOUT ?? 30000),
     navigationTimeout: Number(process.env.E2E_NAV_TIMEOUT ?? 30000),
@@ -48,11 +48,11 @@ export default defineConfig({
     },
 
     {
-      name: 'Nandi',
+      name: 'EventYa',
       testDir: './tests/modules',
       timeout: Number(Env.str('TIMEOUT', '30000')),
       use: {
-        baseURL: Env.str('BASE_URL', 'http://localhost:8000'),
+        baseURL: Env.str('BASE_URL', 'https://167-99-7-152.sslip.io/eventya/'),
         browserName: Env.str('BROWSER', 'chromium') as 'chromium' | 'firefox' | 'webkit',
         headless: Env.bool('HEADLESS', true),
         viewport: null,
