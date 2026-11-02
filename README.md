@@ -9,9 +9,9 @@ Ambos tipos conviven en el mismo repo, organizados por módulo funcional.
 
 ## Sistema bajo prueba
 
-El proyecto apunta actualmente a **EventYa** (`https://167-99-7-152.sslip.io/eventya/`), una SPA real de venta de entradas a eventos. El mock **Nandi** que se usó como prueba de humo inicial quedó de referencia, sin correr (ver más abajo).
+Las pruebas corren contra **EventYa** (`https://167-99-7-152.sslip.io/eventya/`), una app de venta de entradas. El mock **Nandi** del principio quedó en `reference-nandi/` como ejemplo.
 
-Usuarios de prueba de EventYa: `tester01`..`tester15` / `eventya01`..`eventya15` (mismo índice).
+Usuarios de prueba: `tester01` a `tester15`, con contraseña `eventya01` a `eventya15`.
 
 ## Estructura del proyecto
 
@@ -22,7 +22,7 @@ sut/                      Mock de Nandi (prueba de humo inicial, ya no se usa): 
   public/                 login.html, home.html y profile.html (ventana emergente)
 
 reference-nandi/          Specs, POMs, Tasks y datasets de Nandi, de referencia (no se ejecutan)
-  modules/                login, courses, sections, profile, shell — arquitectura de ejemplo
+  modules/                login, courses, sections, profile, shell (ejemplo)
   data/                   Datasets de los casos de Nandi (login.js, courses.js, sections.js, users.js)
 
 tests/

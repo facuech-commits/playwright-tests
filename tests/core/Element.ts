@@ -50,6 +50,14 @@ export class Element {
     );
   }
 
+  cssChild(selector: string): Element {
+    return new Element(
+      async () => (await this.resolve()).locator(selector),
+      this.highlightCss,
+      this.slowMo,
+    );
+  }
+
   nth(index: number): Element {
     return new Element(
       async () => (await this.resolve()).nth(index),
@@ -118,5 +126,10 @@ export class Element {
   async expectEmpty(message?: string): Promise<void> {
     const locator = await this.resolveAndHighlight();
     await expect(locator, message).toBeEmpty();
+  }
+
+  async expectValue(value: string, message?: string): Promise<void> {
+    const locator = await this.resolveAndHighlight();
+    await expect(locator, message).toHaveValue(value);
   }
 }
