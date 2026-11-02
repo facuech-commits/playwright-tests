@@ -53,4 +53,37 @@ test.describe('Selección y carrito', () => {
     await eventDetailTask.expectAddToCartDisabled();
     await menuTask.expectCartCount(expected.cartCount);
   });
+
+  test('CP10 - Cálculo de subtotal y total en el carrito', async ({
+    loginFormTask,
+    menuTask,
+    eventsListTask,
+    eventDetailTask,
+    cartTask,
+    paymentTask,
+  }) => {
+    const { input, expected } = await Data.getCase(SELECTION_DATA_FILE, 'CP10');
+
+    await loginFormTask.login(input.user, input.pass);
+    await menuTask.goToEvents();
+    await eventsListTask.openDetail(input.event);
+    await eventDetailTask.expectPrice(expected.price);
+
+    await eventDetailTask.increase(2);
+    await eventDetailTask.expectQuantity(expected.quantity);
+
+    await eventDetailTask.addToCart();
+    await menuTask.expectCartNotEmpty();
+
+    await menuTask.goToCart();
+    await cartTask.expectItem(input.event, expected.unitPrice, expected.quantity);
+    await cartTask.expectSummary(expected.subtotal, expected.discount, expected.total);
+
+    await cartTask.continueToPayment();
+    await paymentTask.expectTotal(expected.total, expected.payButton);
+
+    await menuTask.goToCart();
+    await cartTask.remove();
+    await cartTask.expectEmpty();
+  });
 });

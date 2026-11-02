@@ -27,6 +27,24 @@ export const SELECTION_CASES = [
       cartCount: '0',
     },
   },
+  {
+    id: 'CP10',
+    description: 'Cálculo de subtotal y total en el carrito',
+    input: {
+      user: USERS.TESTER_15.user,
+      pass: USERS.TESTER_15.pass,
+      event: 'Festival de Folklore Andresito',
+    },
+    expected: {
+      price: '$500 por entrada',
+      quantity: '3',
+      unitPrice: '$500 c/u',
+      subtotal: '$1.500',
+      discount: '-$0',
+      total: '$1.500',
+      payButton: 'Pagar $1.500',
+    },
+  },
 ];
 
 export default SELECTION_CASES;

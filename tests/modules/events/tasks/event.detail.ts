@@ -18,6 +18,14 @@ export class EventDetailTask {
     }
   }
 
+  async addToCart(): Promise<void> {
+    await this.eventDetail.addToCartButton.click();
+  }
+
+  async expectPrice(price: string): Promise<void> {
+    await this.eventDetail.price.expectText(price);
+  }
+
   async expectQuantity(value: string): Promise<void> {
     await this.eventDetail.quantity.expectText(value);
   }
