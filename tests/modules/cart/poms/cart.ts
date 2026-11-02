@@ -9,8 +9,16 @@ export class Cart {
   readonly total: Element;
   readonly continueButton: Element;
   readonly emptyMessage: Element;
+  readonly exploreButton: Element;
+  readonly quantity: Element;
+  readonly plusButton: Element;
+  readonly minusButton: Element;
 
   constructor(readonly app: App) {
+    this.exploreButton = app.byCss('main button:has-text("Explorar eventos")');
+    this.quantity = app.byCss('main .card .qty strong');
+    this.plusButton = app.byCss('main .card .qty button:has-text("+")');
+    this.minusButton = app.byCss('main .card .qty button:first-child');
     this.item = app.byCss('main .card:has(button:has-text("Eliminar"))');
     this.removeButton = app.byCss('main button:has-text("Eliminar")');
     this.subtotal = app.byCss('.summary .row:has-text("Subtotal") strong');

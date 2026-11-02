@@ -45,6 +45,22 @@ export const SELECTION_CASES = [
       payButton: 'Pagar $1.500',
     },
   },
+  {
+    id: 'CP11',
+    description: 'Modificar la cantidad y vaciar el carrito',
+    input: {
+      user: USERS.TESTER_15.user,
+      pass: USERS.TESTER_15.pass,
+      event: 'Festival de Folklore Andresito',
+    },
+    expected: {
+      quantity: '2',
+      subtotal: '$1.000',
+      quantityAfterPlus: '3',
+      subtotalAfterPlus: '$1.500',
+      cartCount: '0',
+    },
+  },
 ];
 
 export default SELECTION_CASES;
