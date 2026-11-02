@@ -120,4 +120,31 @@ test.describe('Selección y carrito', () => {
     await cartTask.expectEmpty();
     await menuTask.expectCartCount(expected.cartCount);
   });
+
+  test('CP12 - Código promocional inválido', async ({
+    loginFormTask,
+    menuTask,
+    eventsListTask,
+    eventDetailTask,
+    cartTask,
+  }) => {
+    // falla porque el codigo falso no da error y aplica descuento (ver casos de prueba)
+    const { input, expected } = await Data.getCase(SELECTION_DATA_FILE, 'CP12');
+
+    await loginFormTask.login(input.user, input.pass);
+    await menuTask.goToEvents();
+    await eventsListTask.openDetail(input.event);
+    await eventDetailTask.addToCart();
+    await menuTask.expectCartNotEmpty();
+
+    await menuTask.goToCart();
+    await cartTask.expectSummary(expected.subtotal, expected.discount, expected.total);
+
+    await cartTask.applyPromo(input.promo);
+    await cartTask.expectPromoError();
+    await cartTask.expectSummary(expected.subtotal, expected.discount, expected.total);
+
+    await cartTask.remove();
+    await cartTask.expectEmpty();
+  });
 });

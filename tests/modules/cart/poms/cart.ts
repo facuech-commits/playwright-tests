@@ -13,8 +13,14 @@ export class Cart {
   readonly quantity: Element;
   readonly plusButton: Element;
   readonly minusButton: Element;
+  readonly promoInput: Element;
+  readonly applyButton: Element;
+  readonly promoMessage: Element;
 
   constructor(readonly app: App) {
+    this.promoInput = app.byId('promo');
+    this.applyButton = app.byCss('main button:has-text("Aplicar")');
+    this.promoMessage = app.byId('promoMsg');
     this.exploreButton = app.byCss('main button:has-text("Explorar eventos")');
     this.quantity = app.byCss('main .card .qty strong');
     this.plusButton = app.byCss('main .card .qty button:has-text("+")');

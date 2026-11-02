@@ -20,6 +20,15 @@ export class CartTask {
     await this.cart.minusButton.click();
   }
 
+  async applyPromo(code: string): Promise<void> {
+    await this.cart.promoInput.fill(code);
+    await this.cart.applyButton.click();
+  }
+
+  async expectPromoError(): Promise<void> {
+    await expect(await this.cart.promoMessage.raw()).not.toBeEmpty();
+  }
+
   async expectQuantityAndSubtotal(quantity: string, subtotal: string): Promise<void> {
     await this.cart.quantity.expectText(quantity);
     await this.cart.subtotal.expectText(subtotal);
