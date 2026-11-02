@@ -22,28 +22,23 @@ export class EventsListTask {
   }
 
   async expectAllCardsHaveCategory(name: string): Promise<void> {
-    const categories = await this.cardCategories();
-    expect(categories.length, 'no hay tarjetas visibles para revisar').toBeGreaterThan(0);
-    for (const category of categories) {
-      expect(category).toBe(name);
-    }
+    const total = await this.eventsList.cards.count();
+    expect(total, 'no hay eventos en la lista').toBeGreaterThan(0);
+    await this.eventsList.cards.cssChild(`.category-chip:text-is("${name}")`).expectCount(total);
   }
 
   async expectAllTitlesContain(text: string): Promise<void> {
-    const titles = await this.cardTitles();
-    expect(titles.length, 'no hay tarjetas visibles para revisar').toBeGreaterThan(0);
+    const titles = await (await this.eventsList.cards.cssChild('h3').raw()).allTextContents();
+    expect(titles.length, 'no hay eventos en la lista').toBeGreaterThan(0);
     for (const title of titles) {
       expect(title.toLowerCase()).toContain(text.toLowerCase());
     }
   }
 
   async expectCountMatchesVisibleCards(): Promise<void> {
-    const countText = (await this.eventsList.countLabel.text())?.trim() ?? '';
-    const match = countText.match(/^(\d+)\s+eventos?\s+encontrados?$/);
-    if (!match) {
-      throw new Error(`No se pudo interpretar el contador de eventos: "${countText}"`);
-    }
-    await this.eventsList.cards.expectCount(Number(match[1]));
+    const total = await this.eventsList.cards.count();
+    const text = total === 1 ? '1 evento encontrado' : `${total} eventos encontrados`;
+    await this.eventsList.countLabel.expectText(text);
   }
 
   async goToPage(text: string): Promise<void> {
@@ -67,25 +62,5 @@ export class EventsListTask {
   async expectFirstEventNot(title: string): Promise<void> {
     const locator = await this.eventsList.cards.nth(0).cssChild('h3').raw();
     await expect(locator).not.toHaveText(title);
-  }
-
-  private async cardTitles(): Promise<string[]> {
-    const cards = await this.eventsList.cards.all();
-    const titles: string[] = [];
-    for (const card of cards) {
-      titles.push(((await card.cssChild('h3').text()) ?? '').trim());
-    }
-    return titles;
-  }
-
-  private async cardCategories(): Promise<string[]> {
-    const cards = await this.eventsList.cards.all();
-    const categories: string[] = [];
-    for (const card of cards) {
-      const chip = card.cssChild('.category-chip');
-      const hasChip = (await chip.count()) > 0;
-      categories.push(hasChip ? ((await chip.text()) ?? '').trim() : '');
-    }
-    return categories;
   }
 }
