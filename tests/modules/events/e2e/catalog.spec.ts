@@ -12,7 +12,10 @@ test.describe('Catálogo', () => {
     const { input, expected } = await Data.getCase(EVENTS_DATA_FILE, 'CP04');
 
     await loginFormTask.login(input.user, input.pass);
+    await loginFormTask.expectLoggedIn();
     await menuTask.goToEvents();
+    await eventsListTask.expectListVisible();
+    await eventsListTask.expectCategorySelected('Todas');
 
     await eventsListTask.selectCategory(input.category);
     await eventsListTask.expectCategorySelected(input.category);
@@ -30,7 +33,9 @@ test.describe('Catálogo', () => {
     const { input, expected } = await Data.getCase(EVENTS_DATA_FILE, 'CP05');
 
     await loginFormTask.login(input.user, input.pass);
+    await loginFormTask.expectLoggedIn();
     await menuTask.goToEvents();
+    await eventsListTask.expectListVisible();
 
     await eventsListTask.search(input.search);
 
