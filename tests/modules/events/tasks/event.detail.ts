@@ -26,6 +26,18 @@ export class EventDetailTask {
     await this.eventDetail.helpText.expectText(text);
   }
 
+  async expectSoldOut(stock: string, status: string): Promise<void> {
+    await this.eventDetail.stock.expectText(stock);
+    await this.eventDetail.chips.filter(status).expectVisible();
+  }
+
+  async expectAddToCartDisabled(): Promise<void> {
+    const button = await this.eventDetail.addToCartButton.raw();
+    if ((await button.count()) > 0) {
+      await expect(button).toBeDisabled();
+    }
+  }
+
   async expectVisible(): Promise<void> {
     await this.eventDetail.title.expectVisible();
   }

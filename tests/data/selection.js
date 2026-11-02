@@ -16,6 +16,17 @@ export const SELECTION_CASES = [
       helpText: 'Podés seleccionar entre 1 y 4 entradas, sin superar el stock disponible.',
     },
   },
+  {
+    id: 'CP09',
+    description: 'Un evento sin stock no se puede agregar al carrito',
+    input: { user: USERS.TESTER_15.user, pass: USERS.TESTER_15.pass, search: 'eSports Challenge' },
+    expected: {
+      stock: '0',
+      cardStock: '0 entradas disponibles',
+      status: 'Agotado',
+      cartCount: '0',
+    },
+  },
 ];
 
 export default SELECTION_CASES;
