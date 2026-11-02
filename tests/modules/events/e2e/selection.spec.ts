@@ -86,4 +86,38 @@ test.describe('Selección y carrito', () => {
     await cartTask.remove();
     await cartTask.expectEmpty();
   });
+
+  test('CP11 - Modificar la cantidad y vaciar el carrito', async ({
+    loginFormTask,
+    menuTask,
+    eventsListTask,
+    eventDetailTask,
+    cartTask,
+  }) => {
+    // falla porque al bajar la cantidad el subtotal no se actualiza (ver casos de prueba)
+    const { input, expected } = await Data.getCase(SELECTION_DATA_FILE, 'CP11');
+
+    await loginFormTask.login(input.user, input.pass);
+    await menuTask.goToEvents();
+    await eventsListTask.openDetail(input.event);
+    await eventDetailTask.increase();
+    await eventDetailTask.addToCart();
+    await menuTask.expectCartNotEmpty();
+
+    await menuTask.goToCart();
+    await cartTask.expectQuantityAndSubtotal(expected.quantity, expected.subtotal);
+
+    await cartTask.increase();
+    await cartTask.expectQuantityAndSubtotal(
+      expected.quantityAfterPlus,
+      expected.subtotalAfterPlus,
+    );
+
+    await cartTask.decrease();
+    await cartTask.expectQuantityAndSubtotal(expected.quantity, expected.subtotal);
+
+    await cartTask.remove();
+    await cartTask.expectEmpty();
+    await menuTask.expectCartCount(expected.cartCount);
+  });
 });

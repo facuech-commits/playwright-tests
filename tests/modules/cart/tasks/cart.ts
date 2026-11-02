@@ -12,6 +12,19 @@ export class CartTask {
     await this.cart.removeButton.click();
   }
 
+  async increase(): Promise<void> {
+    await this.cart.plusButton.click();
+  }
+
+  async decrease(): Promise<void> {
+    await this.cart.minusButton.click();
+  }
+
+  async expectQuantityAndSubtotal(quantity: string, subtotal: string): Promise<void> {
+    await this.cart.quantity.expectText(quantity);
+    await this.cart.subtotal.expectText(subtotal);
+  }
+
   async expectItem(name: string, unitPrice: string, quantity: string): Promise<void> {
     await expect(await this.cart.item.raw()).toContainText(name);
     await expect(await this.cart.item.cssChild('.meta').raw()).toContainText(unitPrice);
@@ -26,5 +39,6 @@ export class CartTask {
 
   async expectEmpty(): Promise<void> {
     await this.cart.emptyMessage.expectVisible();
+    await this.cart.exploreButton.expectVisible();
   }
 }
