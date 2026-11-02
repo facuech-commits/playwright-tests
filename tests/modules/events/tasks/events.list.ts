@@ -46,6 +46,29 @@ export class EventsListTask {
     await this.eventsList.cards.expectCount(Number(match[1]));
   }
 
+  async goToPage(text: string): Promise<void> {
+    await this.eventsList.pageButton(text).click();
+  }
+
+  async expectPageActive(text: string): Promise<void> {
+    const locator = await this.eventsList.pageButton(text).raw();
+    await expect(locator).toHaveClass(/active/);
+  }
+
+  async expectPageButtonDisabled(text: string): Promise<void> {
+    const locator = await this.eventsList.pageButton(text).raw();
+    await expect(locator).toBeDisabled();
+  }
+
+  async firstEventTitle(): Promise<string> {
+    return ((await this.eventsList.cards.nth(0).cssChild('h3').text()) ?? '').trim();
+  }
+
+  async expectFirstEventNot(title: string): Promise<void> {
+    const locator = await this.eventsList.cards.nth(0).cssChild('h3').raw();
+    await expect(locator).not.toHaveText(title);
+  }
+
   private async cardTitles(): Promise<string[]> {
     const cards = await this.eventsList.cards.all();
     const titles: string[] = [];

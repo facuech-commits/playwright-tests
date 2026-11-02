@@ -12,6 +12,10 @@ export class EventsList {
     this.cards = app.byCss('#eventGrid .event-card');
   }
 
+  pageButton(text: string): Element {
+    return this.app.byCss(`#eventPager button:has-text("${text}")`);
+  }
+
   categoryButton(name: string): Element {
     return this.app.byCss(`.category-list button:text-is("${name}")`);
   }

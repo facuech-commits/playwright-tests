@@ -13,6 +13,12 @@ export const EVENTS_CASES = [
     input: { user: USERS.TESTER_15.user, pass: USERS.TESTER_15.pass, search: 'Rock' },
     expected: { mustAppear: 'Montevideo Rock' },
   },
+  {
+    id: 'CP06',
+    description: 'Navegar la paginación del listado',
+    input: { user: USERS.TESTER_15.user, pass: USERS.TESTER_15.pass, category: 'Todas' },
+    expected: { lastPage: '4' },
+  },
 ];
 
 export default EVENTS_CASES;
