@@ -21,7 +21,7 @@ export class EventsListTask {
     await this.eventsList.searchInput.expectValue(text);
   }
 
-  async getFirstCardData(): Promise<{ title: string; meta: string; stock: string; price: string }> {
+  async getFirstCardData() {
     const card = this.eventsList.cards.nth(0);
     return {
       title: ((await card.cssChild('h3').text()) ?? '').trim(),

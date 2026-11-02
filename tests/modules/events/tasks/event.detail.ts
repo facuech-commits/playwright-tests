@@ -12,12 +12,7 @@ export class EventDetailTask {
     await this.eventDetail.title.expectVisible();
   }
 
-  async expectSameDataAsCard(card: {
-    title: string;
-    meta: string;
-    stock: string;
-    price: string;
-  }): Promise<void> {
+  async expectSameDataAsCard(card: Record<string, string>): Promise<void> {
     await this.eventDetail.title.expectText(card.title);
     await this.eventDetail.meta.expectText(card.meta);
     await this.eventDetail.price.expectText(`${card.price} por entrada`);
