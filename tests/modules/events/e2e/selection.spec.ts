@@ -45,11 +45,7 @@ test.describe('Selección y carrito', () => {
     await menuTask.expectCartCount(expected.cartCount);
 
     await eventsListTask.search(input.search);
-    await eventsListTask.expectCardSoldOut(
-      input.search,
-      `${expected.stock} entradas`,
-      expected.status,
-    );
+    await eventsListTask.expectCardSoldOut(input.search, expected.cardStock, expected.status);
 
     await eventsListTask.openDetail(input.search);
     await eventDetailTask.expectSoldOut(expected.stock, expected.status);
