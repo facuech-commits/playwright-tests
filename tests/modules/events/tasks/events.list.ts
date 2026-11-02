@@ -46,46 +46,24 @@ export class EventsListTask {
     await this.eventsList.cards.expectCount(Number(match[1]));
   }
 
-  async goToPage(number: string): Promise<void> {
-    await this.eventsList.pageButton(number).click();
+  async clickPagina(texto: string): Promise<void> {
+    await this.eventsList.botonPagina(texto).click();
   }
 
-  async goToLastPage(): Promise<string> {
-    const pages = await this.eventsList.pageButtons.all();
-    const last = pages[pages.length - 1];
-    const number = ((await last.text()) ?? '').trim();
-    await last.click();
-    return number;
+  async verificarPaginaActiva(texto: string): Promise<void> {
+    await expect(await this.eventsList.botonPagina(texto).raw()).toHaveClass(/active/);
   }
 
-  async nextPage(): Promise<void> {
-    await this.eventsList.nextButton.click();
+  async verificarDeshabilitado(texto: string): Promise<void> {
+    await expect(await this.eventsList.botonPagina(texto).raw()).toBeDisabled();
   }
 
-  async prevPage(): Promise<void> {
-    await this.eventsList.prevButton.click();
-  }
-
-  async expectPageActive(number: string): Promise<void> {
-    const locator = await this.eventsList.pageButton(number).raw();
-    await expect(locator).toHaveClass(/active/);
-  }
-
-  async expectPrevDisabled(): Promise<void> {
-    await expect(await this.eventsList.prevButton.raw()).toBeDisabled();
-  }
-
-  async expectNextDisabled(): Promise<void> {
-    await expect(await this.eventsList.nextButton.raw()).toBeDisabled();
-  }
-
-  async firstEventTitle(): Promise<string> {
+  async primerEvento(): Promise<string> {
     return ((await this.eventsList.cards.nth(0).cssChild('h3').text()) ?? '').trim();
   }
 
-  async expectFirstEventIsNot(title: string): Promise<void> {
-    const locator = await this.eventsList.cards.nth(0).cssChild('h3').raw();
-    await expect(locator).not.toHaveText(title);
+  async verificarPrimerEventoDistinto(titulo: string): Promise<void> {
+    await expect(await this.eventsList.cards.nth(0).cssChild('h3').raw()).not.toHaveText(titulo);
   }
 
   private async cardTitles(): Promise<string[]> {
