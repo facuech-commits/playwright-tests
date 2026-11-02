@@ -9,6 +9,10 @@ import { EventsList } from 'tests/modules/events/poms/events.list';
 import { EventsListTask } from 'tests/modules/events/tasks/events.list';
 import { EventDetail } from 'tests/modules/events/poms/event.detail';
 import { EventDetailTask } from 'tests/modules/events/tasks/event.detail';
+import { Cart } from 'tests/modules/cart/poms/cart';
+import { CartTask } from 'tests/modules/cart/tasks/cart';
+import { Payment } from 'tests/modules/cart/poms/payment';
+import { PaymentTask } from 'tests/modules/cart/tasks/payment';
 import { TicketsList } from 'tests/modules/tickets/poms/tickets.list';
 import { TicketsListTask } from 'tests/modules/tickets/tasks/tickets.list';
 
@@ -22,6 +26,10 @@ type Fixtures = {
   eventsListTask: EventsListTask;
   eventDetail: EventDetail;
   eventDetailTask: EventDetailTask;
+  cart: Cart;
+  cartTask: CartTask;
+  payment: Payment;
+  paymentTask: PaymentTask;
   ticketsList: TicketsList;
   ticketsListTask: TicketsListTask;
 };
@@ -66,6 +74,22 @@ export const test = base.extend<Fixtures>({
 
   eventDetailTask: async ({ eventDetail }, use) => {
     await use(new EventDetailTask(eventDetail));
+  },
+
+  cart: async ({ app }, use) => {
+    await use(new Cart(app));
+  },
+
+  cartTask: async ({ cart }, use) => {
+    await use(new CartTask(cart));
+  },
+
+  payment: async ({ app }, use) => {
+    await use(new Payment(app));
+  },
+
+  paymentTask: async ({ payment }, use) => {
+    await use(new PaymentTask(payment));
   },
 
   ticketsList: async ({ app }, use) => {
