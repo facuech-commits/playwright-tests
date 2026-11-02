@@ -19,6 +19,11 @@ export const EVENTS_CASES = [
     input: { user: USERS.TESTER_15.user, pass: USERS.TESTER_15.pass, category: 'Todas' },
     expected: { lastPage: '4' },
   },
+  {
+    id: 'CP07',
+    description: 'El detalle de un evento coincide con su tarjeta',
+    input: { user: USERS.TESTER_15.user, pass: USERS.TESTER_15.pass, search: 'Montevideo Rock' },
+  },
 ];
 
 export default EVENTS_CASES;

@@ -7,6 +7,8 @@ import { Menu } from 'tests/modules/shell/poms/menu';
 import { MenuTask } from 'tests/modules/shell/tasks/menu';
 import { EventsList } from 'tests/modules/events/poms/events.list';
 import { EventsListTask } from 'tests/modules/events/tasks/events.list';
+import { EventDetail } from 'tests/modules/events/poms/event.detail';
+import { EventDetailTask } from 'tests/modules/events/tasks/event.detail';
 import { TicketsList } from 'tests/modules/tickets/poms/tickets.list';
 import { TicketsListTask } from 'tests/modules/tickets/tasks/tickets.list';
 
@@ -18,6 +20,8 @@ type Fixtures = {
   menuTask: MenuTask;
   eventsList: EventsList;
   eventsListTask: EventsListTask;
+  eventDetail: EventDetail;
+  eventDetailTask: EventDetailTask;
   ticketsList: TicketsList;
   ticketsListTask: TicketsListTask;
 };
@@ -54,6 +58,14 @@ export const test = base.extend<Fixtures>({
 
   eventsListTask: async ({ eventsList }, use) => {
     await use(new EventsListTask(eventsList));
+  },
+
+  eventDetail: async ({ app }, use) => {
+    await use(new EventDetail(app));
+  },
+
+  eventDetailTask: async ({ eventDetail }, use) => {
+    await use(new EventDetailTask(eventDetail));
   },
 
   ticketsList: async ({ app }, use) => {
