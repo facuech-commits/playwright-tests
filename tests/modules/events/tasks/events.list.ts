@@ -45,6 +45,11 @@ export class EventsListTask {
     await card.cssChild('.chip').filter(status).expectVisible();
   }
 
+  async expectCardStock(title: string, stock: string): Promise<void> {
+    const card = this.eventsList.cards.filter(title);
+    await expect(await card.cssChild('.stock-line').raw()).toContainText(stock);
+  }
+
   async expectListVisible(): Promise<void> {
     await this.eventsList.cards.nth(0).expectVisible();
   }
