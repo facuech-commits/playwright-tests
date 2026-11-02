@@ -35,6 +35,10 @@ export class EventsListTask {
     await this.eventsList.cards.nth(0).cssChild('button:has-text("Ver detalle")').click();
   }
 
+  async openDetail(title: string): Promise<void> {
+    await this.eventsList.cards.filter(title).cssChild('button:has-text("Ver detalle")').click();
+  }
+
   async expectListVisible(): Promise<void> {
     await this.eventsList.cards.nth(0).expectVisible();
   }

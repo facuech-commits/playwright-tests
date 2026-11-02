@@ -7,8 +7,16 @@ export class EventDetail {
   readonly meta: Element;
   readonly stock: Element;
   readonly price: Element;
+  readonly quantity: Element;
+  readonly minusButton: Element;
+  readonly plusButton: Element;
+  readonly helpText: Element;
 
   constructor(readonly app: App) {
+    this.quantity = app.byId('dqty');
+    this.minusButton = app.byCss('.qty button:first-child');
+    this.plusButton = app.byCss('.qty button:last-child');
+    this.helpText = app.byCss('.detail-card .small');
     this.backButton = app.byCss('main button:has-text("Volver")');
     this.title = app.byCss('.detail-card h1');
     this.meta = app.byCss('.detail-card .meta');
