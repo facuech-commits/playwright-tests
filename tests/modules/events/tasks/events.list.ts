@@ -17,6 +17,24 @@ export class EventsListTask {
     await expect(locator).toHaveClass(/active/);
   }
 
+  async expectSearchValue(text: string): Promise<void> {
+    await this.eventsList.searchInput.expectValue(text);
+  }
+
+  async getFirstCardData() {
+    const card = this.eventsList.cards.nth(0);
+    return {
+      title: ((await card.cssChild('h3').text()) ?? '').trim(),
+      meta: ((await card.cssChild('.meta').text()) ?? '').trim(),
+      stock: ((await card.cssChild('.stock-line').text()) ?? '').trim(),
+      price: ((await card.cssChild('.price').text()) ?? '').trim(),
+    };
+  }
+
+  async openFirstDetail(): Promise<void> {
+    await this.eventsList.cards.nth(0).cssChild('button:has-text("Ver detalle")').click();
+  }
+
   async expectListVisible(): Promise<void> {
     await this.eventsList.cards.nth(0).expectVisible();
   }

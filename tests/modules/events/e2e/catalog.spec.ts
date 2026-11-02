@@ -73,4 +73,30 @@ test.describe('Catálogo', () => {
     await eventsListTask.expectPageActive(expected.lastPage);
     await eventsListTask.expectPageButtonDisabled('Siguiente');
   });
+
+  test('CP07 - El detalle de un evento coincide con su tarjeta', async ({
+    loginFormTask,
+    menuTask,
+    eventsListTask,
+    eventDetailTask,
+  }) => {
+    // falla porque al volver del detalle se pierde la busqueda (ver casos de prueba)
+    const { input } = await Data.getCase(EVENTS_DATA_FILE, 'CP07');
+
+    await loginFormTask.login(input.user, input.pass);
+    await menuTask.goToEvents();
+    await eventsListTask.expectListVisible();
+
+    await eventsListTask.search(input.search);
+    await eventsListTask.expectEventVisible(input.search);
+    const card = await eventsListTask.getFirstCardData();
+
+    await eventsListTask.openFirstDetail();
+    await eventDetailTask.expectVisible();
+    await eventDetailTask.expectSameDataAsCard(card);
+
+    await eventDetailTask.goBack();
+    await eventsListTask.expectListVisible();
+    await eventsListTask.expectSearchValue(input.search);
+  });
 });
