@@ -28,6 +28,22 @@ export const PURCHASE_CASES = [
       stockAfter: '48 entradas disponibles',
     },
   },
+  {
+    id: 'CP14',
+    description: 'Pago sin identificador de tarjeta',
+    input: {
+      user: USERS.TESTER_15.user,
+      pass: USERS.TESTER_15.pass,
+      event: 'Festival de Folklore Andresito',
+      method: 'Tarjeta',
+    },
+    expected: {
+      total: '$500',
+      payButton: 'Pagar $500',
+      alertMessage: 'Ingresá un identificador de prueba.',
+      cartCount: '1',
+    },
+  },
 ];
 
 export default PURCHASE_CASES;

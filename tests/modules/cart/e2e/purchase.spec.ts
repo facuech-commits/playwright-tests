@@ -1,4 +1,4 @@
-import { test } from 'tests/fixtures/base.fixture';
+import { test, expect } from 'tests/fixtures/base.fixture';
 import { Data } from 'tests/core/Data';
 import { PURCHASE_DATA_FILE } from '../../../data/paths.js';
 
@@ -48,5 +48,39 @@ test.describe('Compra', () => {
     await menuTask.goToEvents();
     await eventsListTask.search(input.search);
     await eventsListTask.expectCardStock(input.search, expected.stockAfter);
+  });
+
+  test('CP14 - Pago sin identificador de tarjeta', async ({
+    loginFormTask,
+    menuTask,
+    eventsListTask,
+    eventDetailTask,
+    cartTask,
+    paymentTask,
+  }) => {
+    const { input, expected } = await Data.getCase(PURCHASE_DATA_FILE, 'CP14');
+
+    await loginFormTask.login(input.user, input.pass);
+    await menuTask.goToEvents();
+    await eventsListTask.openDetail(input.event);
+    await eventDetailTask.addToCart();
+    await menuTask.expectCartNotEmpty();
+
+    await menuTask.goToCart();
+    await cartTask.continueToPayment();
+    await paymentTask.expectTotal(expected.total, expected.payButton);
+
+    await paymentTask.selectMethod(input.method);
+    await paymentTask.expectCardIdEmpty();
+
+    const alertMessage = await paymentTask.payExpectingAlert();
+    expect(alertMessage).toBe(expected.alertMessage);
+    await paymentTask.expectVisible();
+
+    await menuTask.expectCartCount(expected.cartCount);
+
+    await menuTask.goToCart();
+    await cartTask.remove();
+    await cartTask.expectEmpty();
   });
 });
