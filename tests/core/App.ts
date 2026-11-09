@@ -31,6 +31,15 @@ export class App {
     return this.locate((scope) => scope.getByTestId(testId), popup, iframe);
   }
 
+  byRole(
+    role: Parameters<Page['getByRole']>[0],
+    options?: Parameters<Page['getByRole']>[1],
+    popup = 0,
+    iframe = 0,
+  ): Element {
+    return this.locate((scope) => scope.getByRole(role, options), popup, iframe);
+  }
+
   byId(id: string, popup = 0, iframe = 0): Element {
     return this.locate((scope) => scope.locator(`#${id}`), popup, iframe);
   }

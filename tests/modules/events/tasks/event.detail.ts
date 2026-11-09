@@ -40,10 +40,7 @@ export class EventDetailTask {
   }
 
   async expectAddToCartDisabled(): Promise<void> {
-    const button = await this.eventDetail.addToCartButton.raw();
-    if ((await button.count()) > 0) {
-      await expect(button).toBeDisabled();
-    }
+    await this.eventDetail.enabledAddToCartButton.expectCount(0);
   }
 
   async expectVisible(): Promise<void> {
