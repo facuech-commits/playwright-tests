@@ -36,7 +36,7 @@ test.describe('Selección y carrito', () => {
     eventsListTask,
     eventDetailTask,
   }) => {
-    // falla porque el evento sin stock no figura agotado y se puede agregar (ver casos de prueba)
+    // falla porque el botón para agregar al carrito no se deshabilita cuando el evento está agotado (ver casos de prueba)
     const { input, expected } = await Data.getCase(SELECTION_DATA_FILE, 'CP09');
 
     await loginFormTask.login(input.user, input.pass);
@@ -45,13 +45,17 @@ test.describe('Selección y carrito', () => {
     await menuTask.expectCartCount(expected.cartCount);
 
     await eventsListTask.search(input.search);
-    await eventsListTask.expectCardSoldOut(input.search, expected.cardStock, expected.status);
-
     await eventsListTask.openDetail(input.search);
-    await eventDetailTask.expectSoldOut(expected.stock, expected.status);
 
+    await eventDetailTask.expectVisible();
     await eventDetailTask.expectAddToCartDisabled();
     await menuTask.expectCartCount(expected.cartCount);
+
+    await eventDetailTask.expectSoldOut(expected.stock, expected.status);
+
+    await menuTask.goToEvents();
+    await eventsListTask.search(input.search);
+    await eventsListTask.expectCardSoldOut(input.search, expected.cardStock, expected.status);
   });
 
   test('CP10 - Cálculo de subtotal y total en el carrito', async ({

@@ -13,10 +13,15 @@ export class EventDetail {
   readonly helpText: Element;
   readonly chips: Element;
   readonly addToCartButton: Element;
+  readonly enabledAddToCartButton: Element;
 
   constructor(readonly app: App) {
     this.chips = app.byCss('.detail-card .chip');
-    this.addToCartButton = app.byCss('.detail-card button:has-text("Agregar al carrito")');
+    this.addToCartButton = app.byRole('button', { name: 'Agregar al carrito' });
+    this.enabledAddToCartButton = app.byRole('button', {
+      name: 'Agregar al carrito',
+      disabled: false,
+    });
     this.quantity = app.byId('dqty');
     this.minusButton = app.byCss('.qty button:first-child');
     this.plusButton = app.byCss('.qty button:last-child');

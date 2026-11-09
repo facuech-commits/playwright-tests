@@ -14,7 +14,7 @@ export class Payment {
 
   constructor(readonly app: App) {
     this.heading = app.byXPath("//h1[text()='Pago']");
-    this.total = app.byCss('.summary .total');
+    this.total = app.byXPath("//*[normalize-space(text())='Total']/following-sibling::*[1]");
     this.payButton = app.byId('payBtn');
     this.method = app.byId('method');
     this.cardId = app.byId('payid');
